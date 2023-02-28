@@ -1,221 +1,245 @@
-drop table if exists oms_order;
+/*
+ Navicat Premium Data Transfer
 
-drop table if exists oms_order_item;
+ Source Server         : localhost
+ Source Server Type    : MySQL
+ Source Server Version : 80032
+ Source Host           : localhost:3306
+ Source Schema         : gulimall_pms
 
-drop table if exists oms_order_operate_history;
+ Target Server Type    : MySQL
+ Target Server Version : 80032
+ File Encoding         : 65001
 
-drop table if exists oms_order_return_apply;
+ Date: 28/02/2023 22:55:00
+*/
 
-drop table if exists oms_order_return_reason;
+SET NAMES utf8mb4;
+SET FOREIGN_KEY_CHECKS = 0;
 
-drop table if exists oms_order_setting;
+-- ----------------------------
+-- Table structure for pms_attr
+-- ----------------------------
+DROP TABLE IF EXISTS `pms_attr`;
+CREATE TABLE `pms_attr` (
+  `attr_id` bigint NOT NULL AUTO_INCREMENT COMMENT '属性id',
+  `attr_name` char(30) DEFAULT NULL COMMENT '属性名',
+  `search_type` tinyint DEFAULT NULL COMMENT '是否需要检索[0-不需要，1-需要]',
+  `icon` varchar(255) DEFAULT NULL COMMENT '属性图标',
+  `value_select` char(255) DEFAULT NULL COMMENT '可选值列表[用逗号分隔]',
+  `attr_type` tinyint DEFAULT NULL COMMENT '属性类型[0-销售属性，1-基本属性，2-既是销售属性又是基本属性]',
+  `enable` bigint DEFAULT NULL COMMENT '启用状态[0 - 禁用，1 - 启用]',
+  `catelog_id` bigint DEFAULT NULL COMMENT '所属分类',
+  `show_desc` tinyint DEFAULT NULL COMMENT '快速展示【是否展示在介绍上；0-否 1-是】，在sku中仍然可以调整',
+  PRIMARY KEY (`attr_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COMMENT='商品属性';
 
-drop table if exists oms_payment_info;
+-- ----------------------------
+-- Table structure for pms_attr_attrgroup_relation
+-- ----------------------------
+DROP TABLE IF EXISTS `pms_attr_attrgroup_relation`;
+CREATE TABLE `pms_attr_attrgroup_relation` (
+  `id` bigint NOT NULL AUTO_INCREMENT COMMENT 'id',
+  `attr_id` bigint DEFAULT NULL COMMENT '属性id',
+  `attr_group_id` bigint DEFAULT NULL COMMENT '属性分组id',
+  `attr_sort` int DEFAULT NULL COMMENT '属性组内排序',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COMMENT='属性&属性分组关联';
 
-drop table if exists oms_refund_info;
+-- ----------------------------
+-- Table structure for pms_attr_group
+-- ----------------------------
+DROP TABLE IF EXISTS `pms_attr_group`;
+CREATE TABLE `pms_attr_group` (
+  `attr_group_id` bigint NOT NULL AUTO_INCREMENT COMMENT '分组id',
+  `attr_group_name` char(20) DEFAULT NULL COMMENT '组名',
+  `sort` int DEFAULT NULL COMMENT '排序',
+  `descript` varchar(255) DEFAULT NULL COMMENT '描述',
+  `icon` varchar(255) DEFAULT NULL COMMENT '组图标',
+  `catelog_id` bigint DEFAULT NULL COMMENT '所属分类id',
+  PRIMARY KEY (`attr_group_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COMMENT='属性分组';
 
-/*==============================================================*/
-/* Table: oms_order                                             */
-/*==============================================================*/
-create table oms_order
-(
-   id                   bigint not null auto_increment comment 'id',
-   member_id            bigint comment 'member_id',
-   order_sn             char(32) comment '订单号',
-   coupon_id            bigint comment '使用的优惠券',
-   create_time          datetime comment 'create_time',
-   member_username      varchar(200) comment '用户名',
-   total_amount         decimal(18,4) comment '订单总额',
-   pay_amount           decimal(18,4) comment '应付总额',
-   freight_amount       decimal(18,4) comment '运费金额',
-   promotion_amount     decimal(18,4) comment '促销优化金额（促销价、满减、阶梯价）',
-   integration_amount   decimal(18,4) comment '积分抵扣金额',
-   coupon_amount        decimal(18,4) comment '优惠券抵扣金额',
-   discount_amount      decimal(18,4) comment '后台调整订单使用的折扣金额',
-   pay_type             tinyint comment '支付方式【1->支付宝；2->微信；3->银联； 4->货到付款；】',
-   source_type          tinyint comment '订单来源[0->PC订单；1->app订单]',
-   status               tinyint comment '订单状态【0->待付款；1->待发货；2->已发货；3->已完成；4->已关闭；5->无效订单】',
-   delivery_company     varchar(64) comment '物流公司(配送方式)',
-   delivery_sn          varchar(64) comment '物流单号',
-   auto_confirm_day     int comment '自动确认时间（天）',
-   integration          int comment '可以获得的积分',
-   growth               int comment '可以获得的成长值',
-   bill_type            tinyint comment '发票类型[0->不开发票；1->电子发票；2->纸质发票]',
-   bill_header          varchar(255) comment '发票抬头',
-   bill_content         varchar(255) comment '发票内容',
-   bill_receiver_phone  varchar(32) comment '收票人电话',
-   bill_receiver_email  varchar(64) comment '收票人邮箱',
-   receiver_name        varchar(100) comment '收货人姓名',
-   receiver_phone       varchar(32) comment '收货人电话',
-   receiver_post_code   varchar(32) comment '收货人邮编',
-   receiver_province    varchar(32) comment '省份/直辖市',
-   receiver_city        varchar(32) comment '城市',
-   receiver_region      varchar(32) comment '区',
-   receiver_detail_address varchar(200) comment '详细地址',
-   note                 varchar(500) comment '订单备注',
-   confirm_status       tinyint comment '确认收货状态[0->未确认；1->已确认]',
-   delete_status        tinyint comment '删除状态【0->未删除；1->已删除】',
-   use_integration      int comment '下单时使用的积分',
-   payment_time         datetime comment '支付时间',
-   delivery_time        datetime comment '发货时间',
-   receive_time         datetime comment '确认收货时间',
-   comment_time         datetime comment '评价时间',
-   modify_time          datetime comment '修改时间',
-   primary key (id)
-);
+-- ----------------------------
+-- Table structure for pms_brand
+-- ----------------------------
+DROP TABLE IF EXISTS `pms_brand`;
+CREATE TABLE `pms_brand` (
+  `brand_id` bigint NOT NULL AUTO_INCREMENT COMMENT '品牌id',
+  `name` char(50) DEFAULT NULL COMMENT '品牌名',
+  `logo` varchar(2000) DEFAULT NULL COMMENT '品牌logo地址',
+  `descript` longtext COMMENT '介绍',
+  `show_status` tinyint DEFAULT NULL COMMENT '显示状态[0-不显示；1-显示]',
+  `first_letter` char(1) DEFAULT NULL COMMENT '检索首字母',
+  `sort` int DEFAULT NULL COMMENT '排序',
+  PRIMARY KEY (`brand_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COMMENT='品牌';
 
-alter table oms_order comment '订单';
+-- ----------------------------
+-- Table structure for pms_category
+-- ----------------------------
+DROP TABLE IF EXISTS `pms_category`;
+CREATE TABLE `pms_category` (
+  `cat_id` bigint NOT NULL AUTO_INCREMENT COMMENT '分类id',
+  `name` char(50) DEFAULT NULL COMMENT '分类名称',
+  `parent_cid` bigint DEFAULT NULL COMMENT '父分类id',
+  `cat_level` int DEFAULT NULL COMMENT '层级',
+  `show_status` tinyint DEFAULT NULL COMMENT '是否显示[0-不显示，1显示]',
+  `sort` int DEFAULT NULL COMMENT '排序',
+  `icon` char(255) DEFAULT NULL COMMENT '图标地址',
+  `product_unit` char(50) DEFAULT NULL COMMENT '计量单位',
+  `product_count` int DEFAULT NULL COMMENT '商品数量',
+  PRIMARY KEY (`cat_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COMMENT='商品三级分类';
 
-/*==============================================================*/
-/* Table: oms_order_item                                        */
-/*==============================================================*/
-create table oms_order_item
-(
-   id                   bigint not null auto_increment comment 'id',
-   order_id             bigint comment 'order_id',
-   order_sn             char(32) comment 'order_sn',
-   spu_id               bigint comment 'spu_id',
-   spu_name             varchar(255) comment 'spu_name',
-   spu_pic              varchar(500) comment 'spu_pic',
-   spu_brand            varchar(200) comment '品牌',
-   category_id          bigint comment '商品分类id',
-   sku_id               bigint comment '商品sku编号',
-   sku_name             varchar(255) comment '商品sku名字',
-   sku_pic              varchar(500) comment '商品sku图片',
-   sku_price            decimal(18,4) comment '商品sku价格',
-   sku_quantity         int comment '商品购买的数量',
-   sku_attrs_vals       varchar(500) comment '商品销售属性组合（JSON）',
-   promotion_amount     decimal(18,4) comment '商品促销分解金额',
-   coupon_amount        decimal(18,4) comment '优惠券优惠分解金额',
-   integration_amount   decimal(18,4) comment '积分优惠分解金额',
-   real_amount          decimal(18,4) comment '该商品经过优惠后的分解金额',
-   gift_integration     int comment '赠送积分',
-   gift_growth          int comment '赠送成长值',
-   primary key (id)
-);
+-- ----------------------------
+-- Table structure for pms_category_brand_relation
+-- ----------------------------
+DROP TABLE IF EXISTS `pms_category_brand_relation`;
+CREATE TABLE `pms_category_brand_relation` (
+  `id` bigint NOT NULL AUTO_INCREMENT,
+  `brand_id` bigint DEFAULT NULL COMMENT '品牌id',
+  `catelog_id` bigint DEFAULT NULL COMMENT '分类id',
+  `brand_name` varchar(255) DEFAULT NULL,
+  `catelog_name` varchar(255) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COMMENT='品牌分类关联';
 
-alter table oms_order_item comment '订单项信息';
+-- ----------------------------
+-- Table structure for pms_comment_replay
+-- ----------------------------
+DROP TABLE IF EXISTS `pms_comment_replay`;
+CREATE TABLE `pms_comment_replay` (
+  `id` bigint NOT NULL AUTO_INCREMENT COMMENT 'id',
+  `comment_id` bigint DEFAULT NULL COMMENT '评论id',
+  `reply_id` bigint DEFAULT NULL COMMENT '回复id',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COMMENT='商品评价回复关系';
 
-/*==============================================================*/
-/* Table: oms_order_operate_history                             */
-/*==============================================================*/
-create table oms_order_operate_history
-(
-   id                   bigint not null auto_increment comment 'id',
-   order_id             bigint comment '订单id',
-   operate_man          varchar(100) comment '操作人[用户；系统；后台管理员]',
-   create_time          datetime comment '操作时间',
-   order_status         tinyint comment '订单状态【0->待付款；1->待发货；2->已发货；3->已完成；4->已关闭；5->无效订单】',
-   note                 varchar(500) comment '备注',
-   primary key (id)
-);
+-- ----------------------------
+-- Table structure for pms_product_attr_value
+-- ----------------------------
+DROP TABLE IF EXISTS `pms_product_attr_value`;
+CREATE TABLE `pms_product_attr_value` (
+  `id` bigint NOT NULL AUTO_INCREMENT COMMENT 'id',
+  `spu_id` bigint DEFAULT NULL COMMENT '商品id',
+  `attr_id` bigint DEFAULT NULL COMMENT '属性id',
+  `attr_name` varchar(200) DEFAULT NULL COMMENT '属性名',
+  `attr_value` varchar(200) DEFAULT NULL COMMENT '属性值',
+  `attr_sort` int DEFAULT NULL COMMENT '顺序',
+  `quick_show` tinyint DEFAULT NULL COMMENT '快速展示【是否展示在介绍上；0-否 1-是】',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COMMENT='spu属性值';
 
-alter table oms_order_operate_history comment '订单操作历史记录';
+-- ----------------------------
+-- Table structure for pms_sku_images
+-- ----------------------------
+DROP TABLE IF EXISTS `pms_sku_images`;
+CREATE TABLE `pms_sku_images` (
+  `id` bigint NOT NULL AUTO_INCREMENT COMMENT 'id',
+  `sku_id` bigint DEFAULT NULL COMMENT 'sku_id',
+  `img_url` varchar(255) DEFAULT NULL COMMENT '图片地址',
+  `img_sort` int DEFAULT NULL COMMENT '排序',
+  `default_img` int DEFAULT NULL COMMENT '默认图[0 - 不是默认图，1 - 是默认图]',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COMMENT='sku图片';
 
-/*==============================================================*/
-/* Table: oms_order_return_apply                                */
-/*==============================================================*/
-create table oms_order_return_apply
-(
-   id                   bigint not null auto_increment comment 'id',
-   order_id             bigint comment 'order_id',
-   sku_id               bigint comment '退货商品id',
-   order_sn             char(32) comment '订单编号',
-   create_time          datetime comment '申请时间',
-   member_username      varchar(64) comment '会员用户名',
-   return_amount        decimal(18,4) comment '退款金额',
-   return_name          varchar(100) comment '退货人姓名',
-   return_phone         varchar(20) comment '退货人电话',
-   status               tinyint(1) comment '申请状态[0->待处理；1->退货中；2->已完成；3->已拒绝]',
-   handle_time          datetime comment '处理时间',
-   sku_img              varchar(500) comment '商品图片',
-   sku_name             varchar(200) comment '商品名称',
-   sku_brand            varchar(200) comment '商品品牌',
-   sku_attrs_vals       varchar(500) comment '商品销售属性(JSON)',
-   sku_count            int comment '退货数量',
-   sku_price            decimal(18,4) comment '商品单价',
-   sku_real_price       decimal(18,4) comment '商品实际支付单价',
-   reason               varchar(200) comment '原因',
-   description述         varchar(500) comment '描述',
-   desc_pics            varchar(2000) comment '凭证图片，以逗号隔开',
-   handle_note          varchar(500) comment '处理备注',
-   handle_man           varchar(200) comment '处理人员',
-   receive_man          varchar(100) comment '收货人',
-   receive_time         datetime comment '收货时间',
-   receive_note         varchar(500) comment '收货备注',
-   receive_phone        varchar(20) comment '收货电话',
-   company_address      varchar(500) comment '公司收货地址',
-   primary key (id)
-);
+-- ----------------------------
+-- Table structure for pms_sku_info
+-- ----------------------------
+DROP TABLE IF EXISTS `pms_sku_info`;
+CREATE TABLE `pms_sku_info` (
+  `sku_id` bigint NOT NULL AUTO_INCREMENT COMMENT 'skuId',
+  `spu_id` bigint DEFAULT NULL COMMENT 'spuId',
+  `sku_name` varchar(255) DEFAULT NULL COMMENT 'sku名称',
+  `sku_desc` varchar(2000) DEFAULT NULL COMMENT 'sku介绍描述',
+  `catalog_id` bigint DEFAULT NULL COMMENT '所属分类id',
+  `brand_id` bigint DEFAULT NULL COMMENT '品牌id',
+  `sku_default_img` varchar(255) DEFAULT NULL COMMENT '默认图片',
+  `sku_title` varchar(255) DEFAULT NULL COMMENT '标题',
+  `sku_subtitle` varchar(2000) DEFAULT NULL COMMENT '副标题',
+  `price` decimal(18,4) DEFAULT NULL COMMENT '价格',
+  `sale_count` bigint DEFAULT NULL COMMENT '销量',
+  PRIMARY KEY (`sku_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COMMENT='sku信息';
 
-alter table oms_order_return_apply comment '订单退货申请';
+-- ----------------------------
+-- Table structure for pms_sku_sale_attr_value
+-- ----------------------------
+DROP TABLE IF EXISTS `pms_sku_sale_attr_value`;
+CREATE TABLE `pms_sku_sale_attr_value` (
+  `id` bigint NOT NULL AUTO_INCREMENT COMMENT 'id',
+  `sku_id` bigint DEFAULT NULL COMMENT 'sku_id',
+  `attr_id` bigint DEFAULT NULL COMMENT 'attr_id',
+  `attr_name` varchar(200) DEFAULT NULL COMMENT '销售属性名',
+  `attr_value` varchar(200) DEFAULT NULL COMMENT '销售属性值',
+  `attr_sort` int DEFAULT NULL COMMENT '顺序',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COMMENT='sku销售属性&值';
 
-/*==============================================================*/
-/* Table: oms_order_return_reason                               */
-/*==============================================================*/
-create table oms_order_return_reason
-(
-   id                   bigint not null auto_increment comment 'id',
-   name                 varchar(200) comment '退货原因名',
-   sort                 int comment '排序',
-   status               tinyint(1) comment '启用状态',
-   create_time          datetime comment 'create_time',
-   primary key (id)
-);
+-- ----------------------------
+-- Table structure for pms_spu_comment
+-- ----------------------------
+DROP TABLE IF EXISTS `pms_spu_comment`;
+CREATE TABLE `pms_spu_comment` (
+  `id` bigint NOT NULL AUTO_INCREMENT COMMENT 'id',
+  `sku_id` bigint DEFAULT NULL COMMENT 'sku_id',
+  `spu_id` bigint DEFAULT NULL COMMENT 'spu_id',
+  `spu_name` varchar(255) DEFAULT NULL COMMENT '商品名字',
+  `member_nick_name` varchar(255) DEFAULT NULL COMMENT '会员昵称',
+  `star` tinyint(1) DEFAULT NULL COMMENT '星级',
+  `member_ip` varchar(64) DEFAULT NULL COMMENT '会员ip',
+  `create_time` datetime DEFAULT NULL COMMENT '创建时间',
+  `show_status` tinyint(1) DEFAULT NULL COMMENT '显示状态[0-不显示，1-显示]',
+  `spu_attributes` varchar(255) DEFAULT NULL COMMENT '购买时属性组合',
+  `likes_count` int DEFAULT NULL COMMENT '点赞数',
+  `reply_count` int DEFAULT NULL COMMENT '回复数',
+  `resources` varchar(1000) DEFAULT NULL COMMENT '评论图片/视频[json数据；[{type:文件类型,url:资源路径}]]',
+  `content` text COMMENT '内容',
+  `member_icon` varchar(255) DEFAULT NULL COMMENT '用户头像',
+  `comment_type` tinyint DEFAULT NULL COMMENT '评论类型[0 - 对商品的直接评论，1 - 对评论的回复]',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COMMENT='商品评价';
 
-alter table oms_order_return_reason comment '退货原因';
+-- ----------------------------
+-- Table structure for pms_spu_images
+-- ----------------------------
+DROP TABLE IF EXISTS `pms_spu_images`;
+CREATE TABLE `pms_spu_images` (
+  `id` bigint NOT NULL AUTO_INCREMENT COMMENT 'id',
+  `spu_id` bigint DEFAULT NULL COMMENT 'spu_id',
+  `img_name` varchar(200) DEFAULT NULL COMMENT '图片名',
+  `img_url` varchar(255) DEFAULT NULL COMMENT '图片地址',
+  `img_sort` int DEFAULT NULL COMMENT '顺序',
+  `default_img` tinyint DEFAULT NULL COMMENT '是否默认图',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COMMENT='spu图片';
 
-/*==============================================================*/
-/* Table: oms_order_setting                                     */
-/*==============================================================*/
-create table oms_order_setting
-(
-   id                   bigint not null auto_increment comment 'id',
-   flash_order_overtime int comment '秒杀订单超时关闭时间(分)',
-   normal_order_overtime int comment '正常订单超时时间(分)',
-   confirm_overtime     int comment '发货后自动确认收货时间（天）',
-   finish_overtime      int comment '自动完成交易时间，不能申请退货（天）',
-   comment_overtime     int comment '订单完成后自动好评时间（天）',
-   member_level         tinyint(2) comment '会员等级【0-不限会员等级，全部通用；其他-对应的其他会员等级】',
-   primary key (id)
-);
+-- ----------------------------
+-- Table structure for pms_spu_info
+-- ----------------------------
+DROP TABLE IF EXISTS `pms_spu_info`;
+CREATE TABLE `pms_spu_info` (
+  `id` bigint NOT NULL AUTO_INCREMENT COMMENT '商品id',
+  `spu_name` varchar(200) DEFAULT NULL COMMENT '商品名称',
+  `spu_description` varchar(1000) DEFAULT NULL COMMENT '商品描述',
+  `catalog_id` bigint DEFAULT NULL COMMENT '所属分类id',
+  `brand_id` bigint DEFAULT NULL COMMENT '品牌id',
+  `weight` decimal(18,4) DEFAULT NULL,
+  `publish_status` tinyint DEFAULT NULL COMMENT '上架状态[0 - 下架，1 - 上架]',
+  `create_time` datetime DEFAULT NULL,
+  `update_time` datetime DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COMMENT='spu信息';
 
-alter table oms_order_setting comment '订单配置信息';
+-- ----------------------------
+-- Table structure for pms_spu_info_desc
+-- ----------------------------
+DROP TABLE IF EXISTS `pms_spu_info_desc`;
+CREATE TABLE `pms_spu_info_desc` (
+  `spu_id` bigint NOT NULL COMMENT '商品id',
+  `decript` longtext COMMENT '商品介绍',
+  PRIMARY KEY (`spu_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COMMENT='spu信息介绍';
 
-/*==============================================================*/
-/* Table: oms_payment_info                                      */
-/*==============================================================*/
-create table oms_payment_info
-(
-   id                   bigint not null auto_increment comment 'id',
-   order_sn             char(32) comment '订单号（对外业务号）',
-   order_id             bigint comment '订单id',
-   alipay_trade_no      varchar(50) comment '支付宝交易流水号',
-   total_amount         decimal(18,4) comment '支付总金额',
-   subject              varchar(200) comment '交易内容',
-   payment_status       varchar(20) comment '支付状态',
-   create_time          datetime comment '创建时间',
-   confirm_time         datetime comment '确认时间',
-   callback_content     varchar(4000) comment '回调内容',
-   callback_time        datetime comment '回调时间',
-   primary key (id)
-);
-
-alter table oms_payment_info comment '支付信息表';
-
-/*==============================================================*/
-/* Table: oms_refund_info                                       */
-/*==============================================================*/
-create table oms_refund_info
-(
-   id                   bigint not null auto_increment comment 'id',
-   order_return_id      bigint comment '退款的订单',
-   refund               decimal(18,4) comment '退款金额',
-   refund_sn            varchar(64) comment '退款交易流水号',
-   refund_status        tinyint(1) comment '退款状态',
-   refund_channel       tinyint comment '退款渠道[1-支付宝，2-微信，3-银联，4-汇款]',
-   refund_content       varchar(5000),
-   primary key (id)
-);
-
-alter table oms_refund_info comment '退款信息';
+SET FOREIGN_KEY_CHECKS = 1;
