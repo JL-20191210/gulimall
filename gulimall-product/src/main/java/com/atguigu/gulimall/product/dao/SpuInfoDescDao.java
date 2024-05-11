@@ -7,9 +7,9 @@ import org.apache.ibatis.annotations.Mapper;
 /**
  * spu信息介绍
  * 
- * @author HJL
+ * @author felix
  * @email hujinlong18212@gmail.com
- * @date 2023-02-13 23:00:37
+ * @date 2024-05-11 20:55:54
  */
 @Mapper
 public interface SpuInfoDescDao extends BaseMapper<SpuInfoDescEntity> {

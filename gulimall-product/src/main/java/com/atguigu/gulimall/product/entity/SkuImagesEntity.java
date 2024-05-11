@@ -10,9 +10,9 @@ import lombok.Data;
 /**
  * sku图片
  * 
- * @author HJL
+ * @author felix
  * @email hujinlong18212@gmail.com
- * @date 2023-02-13 23:00:37
+ * @date 2024-05-11 20:55:54
  */
 @Data
 @TableName("pms_sku_images")

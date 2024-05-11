@@ -20,9 +20,9 @@ import com.atguigu.common.utils.R;
 /**
  * 品牌
  *
- * @author HJL
+ * @author felix
  * @email hujinlong18212@gmail.com
- * @date 2023-02-14 23:44:46
+ * @date 2024-05-11 20:55:54
  */
 @RestController
 @RequestMapping("product/brand")

@@ -9,6 +9,36 @@
     <version>1.0-SNAPSHOT</version>
     <packaging>pom</packaging>
 
+    <parent>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-starter-parent</artifactId>
+        <version>2.2.6.RELEASE</version>
+        <relativePath/>
+    </parent>
+
+    <!-- 定义依赖版本属性 -->
+    <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+        <java.version>1.8</java.version>
+        <mybatisplus.version>3.3.1</mybatisplus.version>
+        <druid.version>1.1.13</druid.version>
+        <commons.lang.version>2.6</commons.lang.version>
+        <commons.io.version>2.5</commons.io.version>
+        <commons.configuration.version>1.10</commons.configuration.version>
+        <fastjson.version>1.2.60</fastjson.version>
+        <velocity.version>1.7</velocity.version>
+        <pagehelper.spring.boot.version>1.2.5</pagehelper.spring.boot.version>
+        <mysql.version>8.0.17</mysql.version>
+        <mssql.version>4.0</mssql.version>
+        <oracle.version>11.2.0.3</oracle.version>
+        <mongo.version>3.11.0</mongo.version>
+        <lombok.version>1.18.12</lombok.version>
+        <servlet.version>2.5</servlet.version>
+        <dameng.version>7.6.0.77</dameng.version>
+        <httpcore.version>4.4.15</httpcore.version>
+    </properties>
+
     <modules>
         <module>renren-fast</module>
         <module>renren-generator</module>
