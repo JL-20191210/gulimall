@@ -31,6 +31,17 @@ public class CouponController {
     private CouponService couponService;
 
     /**
+     * 远程调用使用该接口
+     */
+    @RequestMapping("/member/list")
+    public R memeber(){
+        CouponEntity coupon = new CouponEntity();
+        coupon.setCouponName("满100-100");
+
+        return R.ok("查询成功").put("coupons",coupon);
+    }
+
+    /**
      * 列表
      */
     @RequestMapping("/list")
