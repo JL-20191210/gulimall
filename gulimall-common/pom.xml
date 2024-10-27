@@ -188,7 +188,8 @@
 		<!--        作为配置中心-->
 		<dependency>
 			<groupId>com.alibaba.cloud</groupId>
-			<artifactId>spring-cloud-starter-alibaba-nacos-config</artifactId> </dependency>
+			<artifactId>spring-cloud-starter-alibaba-nacos-config</artifactId>
+		</dependency>
 
 		<!--        远程调用-->
 		<dependency>

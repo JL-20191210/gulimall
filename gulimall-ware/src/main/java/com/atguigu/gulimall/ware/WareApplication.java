@@ -9,7 +9,7 @@ import org.springframework.boot.autoconfigure.mongo.MongoAutoConfiguration;
 import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
 
 @EnableDiscoveryClient
-@MapperScan("com.atguigu.gulimall.product.dao")
+@MapperScan("com.atguigu.gulimall.ware.dao")
 @SpringBootApplication(exclude = {MongoAutoConfiguration.class, MongoDataAutoConfiguration.class})
 public class WareApplication {
     public static void main(String[] args) {

@@ -11,7 +11,7 @@ import org.springframework.cloud.openfeign.EnableFeignClients;
 
 @EnableFeignClients
 @EnableDiscoveryClient
-@MapperScan("com.atguigu.gulimall.product.dao")
+@MapperScan("com.atguigu.gulimall.member.dao")
 @SpringBootApplication(exclude = {MongoAutoConfiguration.class, MongoDataAutoConfiguration.class})
 public class MemberApplication {
     public static void main(String[] args) {
