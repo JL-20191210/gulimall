@@ -13,10 +13,12 @@
         <module name="gulimall-order" />
         <module name="gulimall-member" />
         <module name="gulimall-ware" />
+        <module name="gulimall-gateway" />
         <module name="gulimall-product" />
         <module name="renren-generator" />
       </profile>
     </annotationProcessing>
+    <bytecodeTargetLevel target="8" />
   </component>
   <component name="JavacSettings">
     <option name="ADDITIONAL_OPTIONS_OVERRIDE">
