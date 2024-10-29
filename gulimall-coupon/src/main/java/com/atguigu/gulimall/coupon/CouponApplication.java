@@ -7,9 +7,9 @@ import org.springframework.boot.autoconfigure.data.mongo.MongoDataAutoConfigurat
 import org.springframework.boot.autoconfigure.mongo.MongoAutoConfiguration;
 import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
 
+@EnableDiscoveryClient
 @SpringBootApplication(exclude = {MongoAutoConfiguration.class, MongoDataAutoConfiguration.class})
 @MapperScan("com.atguigu.gulimall.coupon.dao")
-@EnableDiscoveryClient
 public class CouponApplication {
     public static void main(String[] args) {
         SpringApplication.run(CouponApplication.class, args);
