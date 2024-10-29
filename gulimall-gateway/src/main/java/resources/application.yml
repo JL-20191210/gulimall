@@ -1,14 +1,13 @@
-# mysql
-#spring:
-#  datasource:
-#    url: jdbc:mysql://192.168.68.86:3306/gulimall_sms?useSSL=false&serverTimezone=UTC
-#    username: felix
-#    password: 123456a!
-#    driver-class-name: com.mysql.cj.jdbc.Driver
-#
-#
-#mybatis-plus:
-#  mapper-locations: classpath:mapper/**/*.xml
-#
-#server:
-#  port: 8000
+spring:
+  cloud:
+    gateway:
+      routes:
+        - id : test_route
+          uri: https://www.baidu.com
+          predicates:
+            - Query=url,baidu
+        - id : qq_route
+          uri:
+            https://www.qq.com
+          predicates:
+            - Query=url,qq
