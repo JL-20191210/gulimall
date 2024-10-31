@@ -3,7 +3,7 @@
 #        type: com.alibaba.druid.pool.DruidDataSource
 #        druid:
 #            driver-class-name: com.mysql.cj.jdbc.Driver
-#            url: jdbc:mysql://192.168.68.86:3306/gulimall_admin?useUnicode=true&characterEncoding=UTF-8&serverTimezone=Asia/Shanghai
+#            url: jdbc:mysql://81.70.62.114:33306/gulimall_admin?useUnicode=true&characterEncoding=UTF-8&serverTimezone=Asia/Shanghai&useSSL=false
 #            username: felix
 #            password: 123456a!
 #            initial-size: 10
