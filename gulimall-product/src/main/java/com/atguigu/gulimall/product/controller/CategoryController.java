@@ -13,7 +13,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.atguigu.gulimall.product.entity.CategoryEntity;
 import com.atguigu.gulimall.product.service.CategoryService;
-import com.atguigu.common.utils.PageUtils;
 import com.atguigu.common.utils.R;
 
 
@@ -73,11 +72,12 @@ public class  CategoryController {
 
     /**
      * 删除
+     * @RequestBody：请求体 要求发送的请求必须是POST
      */
     @RequestMapping("/delete")
     public R delete(@RequestBody Long[] catIds){
 		categoryService.removeByIds(Arrays.asList(catIds));
-
+        categoryService.removeMenuByIds(Arrays.asList(catIds));
         return R.ok();
     }
 
