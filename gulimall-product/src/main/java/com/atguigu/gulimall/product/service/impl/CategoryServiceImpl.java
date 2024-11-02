@@ -35,7 +35,7 @@ public class CategoryServiceImpl extends ServiceImpl<CategoryDao, CategoryEntity
         List<CategoryEntity> list = baseMapper.selectList(null);
         List<CategoryEntity> level1Menus = list.stream().filter((category) -> category.getParentCid() == 0)
                 .map(category ->{
-                    category.setChildrenList(getChildrens(category,list));
+                    category.setChildren(getChildrens(category,list));
                     return category;
                 })
                 .collect(Collectors.toList());
@@ -46,7 +46,7 @@ public class CategoryServiceImpl extends ServiceImpl<CategoryDao, CategoryEntity
         List<CategoryEntity> children = all.stream().filter(category -> category.getParentCid() == root.getCatId())
                 .map(category -> {
                     //递归查询子分类
-                    category.setChildrenList(getChildrens(category, all));
+                    category.setChildren(getChildrens(category, all));
                     return category;
                 }).sorted((menu1,menu2)->{
                     //防止空指针异常
