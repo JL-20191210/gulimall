@@ -5,7 +5,8 @@ spring:
     nacos:
       discovery:
         # Nacos注册中心
-        server-addr: 81.70.62.114:8848
+#        server-addr: 81.70.62.114:8848
+        server-addr: 192.168.68.86:8848
 
     gateway:
       routes:
